@@ -1,6 +1,6 @@
 ﻿using CartService.Data;
 using CartService.DTOs;
-using CartService.User;
+using BuildingBlocks.User;
 
 namespace CartService.Features.Cart.GetCart;
 

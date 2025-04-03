@@ -1,4 +1,4 @@
-﻿namespace CartService.Exceptions;
+﻿namespace BuildingBlocks.Exceptions;
 
 public class InsufficientStockException : Exception
 {

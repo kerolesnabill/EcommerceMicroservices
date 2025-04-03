@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using BuildingBlocks.User;
 using MediatR;
-using UserService.Application.Users;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 

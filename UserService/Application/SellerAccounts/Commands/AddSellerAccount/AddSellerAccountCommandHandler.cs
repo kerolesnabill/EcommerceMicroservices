@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using UserService.Application.Users;
 using UserService.Domain.Entities;
-using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
+using BuildingBlocks.Exceptions;
+using BuildingBlocks.User;
 
 namespace UserService.Application.SellerAccounts.Commands.AddSellerAccount;
 
@@ -21,12 +21,12 @@ public class AddSellerAccountCommandHandler(
         logger.LogInformation("Creating a seller account for user: {UserId}", currentUser.Id);
 
         var user = await userRepository.GetByIdAsync(currentUser.Id)
-            ?? throw new UserNotFoundException(currentUser.Id.ToString());
+            ?? throw new NotFoundException(nameof(User), currentUser.Id.ToString());
 
         var sellerAccount = await sellerAccountRepository.GetByUserIdAsync(currentUser.Id);
 
         if (sellerAccount != null)
-            throw new BadRequestException("User has a seller account");
+            throw new ConflictException("User already has a seller account");
 
         sellerAccount = mapper.Map<SellerAccount>(request);
         sellerAccount.UserId = user.Id;

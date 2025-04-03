@@ -10,19 +10,19 @@
 
   <ItemGroup>
     <PackageReference Include="Carter" Version="9.0.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.70.0" />
-    <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Marten" Version="7.39.5" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
     <PackageReference Include="Scrutor" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\ProductService\gRPC\Protos\product.proto" GrpcServices="Client">
+    <ProjectReference Include="..\BuildingBlocks\BuildingBlocks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\BuildingBlocks\Protos\product.proto" GrpcServices="Client">
       <Link>Protos\product.proto</Link>
     </Protobuf>
   </ItemGroup>

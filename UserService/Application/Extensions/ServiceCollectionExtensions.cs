@@ -1,7 +1,7 @@
-﻿using FluentValidation;
+﻿using BuildingBlocks.User;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using UserService.Application.Services;
-using UserService.Application.Users;
 
 namespace UserService.Application.Extensions;
 

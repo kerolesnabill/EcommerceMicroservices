@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
-using UserService.Presentation.Middlewares;
+using BuildingBlocks.Middlewares;
 
 namespace UserService.Presentation.Extensions;
 

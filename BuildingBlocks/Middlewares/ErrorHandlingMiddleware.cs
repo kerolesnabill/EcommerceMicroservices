@@ -1,6 +1,11 @@
-﻿using UserService.Domain.Exceptions;
+﻿using BuildingBlocks.Exceptions;
+using FluentValidation;
+using Grpc.Core;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Net;
 
-namespace UserService.Presentation.Middlewares;
+namespace BuildingBlocks.Middlewares;
 
 public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : IMiddleware
 {
@@ -10,24 +15,22 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
         {
             await next.Invoke(context);
         }
-        catch (IncorrectException ex)
-        {
-            logger.LogWarning(ex.Message);
-
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
-        }
-        catch (InvalidRefreshTokenException ex)
-        {
-            logger.LogWarning(ex.Message);
-
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
-        }
-        catch (UnauthorizedException ex)
+        catch (UnauthorizedAccessException ex)
         {
             logger.LogWarning(ex.Message);
             context.Response.StatusCode = 401;
+            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
+        catch (ConflictException ex)
+        {
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = 409;
+            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
+        catch (InsufficientStockException ex)
+        {
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = 409;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
         catch (ForbiddenException ex)
@@ -36,29 +39,38 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
             context.Response.StatusCode = 403;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
-        catch (UserNotFoundException ex)
+
+        catch (NotFoundException ex)
         {
             logger.LogWarning(ex.Message);
             context.Response.StatusCode = 404;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
-        catch (AddressNotFoundException ex)
-        {
-            logger.LogWarning(ex.Message);
-            context.Response.StatusCode = 404;
-            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
-        }
-        catch (SellerNotFoundException ex)
-        {
-            logger.LogWarning(ex.Message);
-            context.Response.StatusCode = 404;
-            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
-        }
-        catch (BadRequestException ex)
+        catch (BadHttpRequestException ex)
         {
             logger.LogWarning(ex.Message);
             context.Response.StatusCode = 400;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
+        catch (ValidationException ex)
+        {
+           
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(ex.Errors.Select(e =>
+                    new { message = e.ErrorMessage, field = e.PropertyName }));
+        }
+        catch (RpcException ex)
+        {
+            var status = ex.StatusCode switch
+            {
+                StatusCode.NotFound => HttpStatusCode.NotFound,
+                _ => HttpStatusCode.BadRequest,
+            };
+
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = (int)status;
+            await context.Response.WriteAsJsonAsync(new { error = ex.Status.Detail ?? ex.Message });
         }
         catch (Exception ex)
         {

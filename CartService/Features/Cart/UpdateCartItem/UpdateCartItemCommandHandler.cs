@@ -1,7 +1,7 @@
 ﻿using CartService.Data;
-using CartService.Exceptions;
-using CartService.User;
 using ProductService;
+using BuildingBlocks.Exceptions;
+using BuildingBlocks.User;
 
 namespace CartService.Features.Cart.UpdateCartItem;
 

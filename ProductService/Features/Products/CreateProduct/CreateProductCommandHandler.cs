@@ -1,5 +1,5 @@
 ﻿using ProductService.Models;
-using ProductService.User;
+using BuildingBlocks.User;
 
 namespace ProductService.Features.Products.CreateProduct;
 

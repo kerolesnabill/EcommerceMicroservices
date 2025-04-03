@@ -1,14 +1,16 @@
-﻿using CartService.User;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text.Json;
+using BuildingBlocks.User;
 
-namespace CartService.Extensions;
+namespace BuildingBlocks.Extensions.ServiceCollection;
 
 record JwtSettings(string publicKey, string issuer, string audience);
 
-public static class ServiceCollectionAuthExtensions
+public static class AuthenticationExtension
 {
     public static void AddAuthenticationService(this IServiceCollection services, IConfiguration config)
     {
@@ -16,7 +18,7 @@ public static class ServiceCollectionAuthExtensions
             .AddJwtBearer(async options =>
             {
                 var publicKeyUrl = config["PublicKeyUrl"]!;
-                string publicKeyResponse = await FetchPublicKeyAsync(publicKeyUrl);
+                string? publicKeyResponse = await FetchPublicKeyAsync(publicKeyUrl);
 
                 if (string.IsNullOrEmpty(publicKeyResponse))
                 {
@@ -50,7 +52,7 @@ public static class ServiceCollectionAuthExtensions
         services.AddScoped<IUserContext, UserContext>();
     }
 
-    private static async Task<string> FetchPublicKeyAsync(string url)
+    private static async Task<string?> FetchPublicKeyAsync(string url)
     {
         using var httpClient = new HttpClient();
         string response = string.Empty;

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using UserService.Domain.Exceptions;
+using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
+using BuildingBlocks.Exceptions;
+using BuildingBlocks.User;
 
 namespace UserService.Application.Users.Commands.UpdateUser;
 
@@ -17,7 +19,7 @@ public class UpdateUserCommandHandler
         logger.LogInformation("Updating user with id {UserId}", currentUser.Id);
 
         var user = await userRepository.GetByIdAsync(currentUser.Id)
-            ?? throw new UserNotFoundException(currentUser.Id.ToString());
+            ?? throw new NotFoundException(nameof(User), currentUser.Id.ToString());
 
         mapper.Map(request, user);
         user.UpdatedAt = DateTime.UtcNow;

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using BuildingBlocks.Exceptions;
+using BuildingBlocks.User;
 using MediatR;
 using UserService.Application.Addresses.DTOs;
-using UserService.Application.Users;
-using UserService.Domain.Exceptions;
+using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Addresses.Queries.GetAddressById;
@@ -19,7 +20,7 @@ public class GetAddressByIdCommandHandler(
         logger.LogInformation("Getting addresses for user: {UserId}", currentUser.Id);
 
         var address = await addressRepository.GetByIdAsync(request.Id)
-            ?? throw new AddressNotFoundException(request.Id.ToString());
+            ?? throw new NotFoundException(nameof(Address), request.Id.ToString());
 
         if(address.UserId != currentUser.Id)
             throw new ForbiddenException();

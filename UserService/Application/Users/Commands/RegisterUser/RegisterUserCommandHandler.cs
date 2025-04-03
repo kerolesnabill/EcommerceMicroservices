@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using BuildingBlocks.Exceptions;
+using MediatR;
 using UserService.Application.Services;
 using UserService.Application.Users.DTOs;
 using UserService.Domain.Entities;
-using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands.RegisterUser;
@@ -17,8 +17,8 @@ public class RegisterUserCommandHandler(ILogger<RegisterUserCommandHandler> logg
         logger.LogInformation("Registering a new user");
 
 
-        var usr1 = await userRepository.GetByEmailAsync(request.Email);
-        if (usr1 != null) throw new BadRequestException("Email is already used");
+            var usr1 = await userRepository.GetByEmailAsync(request.Email);
+            if (usr1 != null) throw new ConflictException("Email is already used");
 
         string hashed = BCrypt.Net.BCrypt.HashPassword(request.Password);
 

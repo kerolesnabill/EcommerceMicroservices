@@ -1,6 +1,6 @@
-﻿using ProductService.Exceptions;
+﻿using BuildingBlocks.Exceptions;
 using ProductService.Models;
-using ProductService.User;
+using BuildingBlocks.User;
 
 namespace ProductService.Features.Products.UpdateProduct;
 
@@ -18,7 +18,7 @@ public class UpdateProductCommandHandler(
         if (!validId) throw new BadHttpRequestException("Invalid seller Id");
 
         var product = await session.LoadAsync<Product>(request.Id, cancellationToken)
-            ?? throw new ProductNotFoundException(request.Id);
+            ?? throw new NotFoundException(nameof(Product), request.Id.ToString());
 
         if (product.SellerId != sellerId) 
             throw new ForbiddenException();

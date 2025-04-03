@@ -1,5 +1,6 @@
 using CartService.Extensions;
-using CartService.Middlewares;
+using BuildingBlocks.Middlewares;
+using BuildingBlocks.Extensions.ServiceCollection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServiceExtensions(builder.Configuration);

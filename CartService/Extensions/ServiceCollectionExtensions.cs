@@ -1,7 +1,7 @@
-﻿using CartService.Behaviors;
+﻿using BuildingBlocks.Middlewares;
+using BuildingBlocks.Behaviors;
 using CartService.Data;
 using CartService.DTOs;
-using CartService.Middlewares;
 using ProductService;
 
 namespace CartService.Extensions;

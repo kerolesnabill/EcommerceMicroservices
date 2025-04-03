@@ -1,7 +1,7 @@
-using ProductService.Behaviors;
-using ProductService.Middlewares;
-using ProductService.Extensions;
-using ProductService.User;
+using BuildingBlocks.Extensions.ServiceCollection;
+using BuildingBlocks.Middlewares;
+using BuildingBlocks.Behaviors;
+using BuildingBlocks.User;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;

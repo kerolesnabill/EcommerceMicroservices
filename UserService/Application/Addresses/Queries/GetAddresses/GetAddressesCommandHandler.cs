@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using BuildingBlocks.User;
 using MediatR;
 using UserService.Application.Addresses.DTOs;
-using UserService.Application.Users;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Addresses.Queries.GetAddresses;

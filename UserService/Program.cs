@@ -2,7 +2,7 @@ using UserService.Application.Extensions;
 using UserService.Infrastructure.Extensions;
 using UserService.Infrastructure.Seeders;
 using UserService.Presentation.Extensions;
-using UserService.Presentation.Middlewares;
+using BuildingBlocks.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

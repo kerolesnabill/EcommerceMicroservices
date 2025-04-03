@@ -1,7 +1,7 @@
-﻿using CartService.Data;
-using CartService.Exceptions;
+﻿using BuildingBlocks.Exceptions;
+using BuildingBlocks.User;
+using CartService.Data;
 using CartService.Models;
-using CartService.User;
 using ProductService;
 
 namespace CartService.Features.Cart.AddItemToCart;

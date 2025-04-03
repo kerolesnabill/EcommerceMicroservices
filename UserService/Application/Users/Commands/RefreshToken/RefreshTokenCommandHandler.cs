@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using UserService.Application.Services;
 using UserService.Application.Users.DTOs;
-using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands.RefreshToken;
@@ -15,7 +14,7 @@ public class RefreshTokenCommandHandler
         var user = await userRepository.GetByRefreshTokenAsync(request.RefreToken);
 
         if (user == null || user.RefreshTokenExpiry < DateTime.UtcNow)
-            throw new InvalidRefreshTokenException();
+            throw new UnauthorizedAccessException("Invalid or expired refresh token");
 
         var token = jwtService.GetUserTokenDto(user);
 

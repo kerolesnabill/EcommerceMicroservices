@@ -1,5 +1,5 @@
 ﻿using CartService.Data;
-using CartService.User;
+using BuildingBlocks.User;
 
 namespace CartService.Features.Cart.RemoveCart;
 
